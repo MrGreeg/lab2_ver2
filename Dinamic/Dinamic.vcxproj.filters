@@ -15,15 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Task.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BinarySignal.h">
+    <ClInclude Include="DinamicArray.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BinarySignal.cpp">
+    <ClCompile Include="DinamicArray.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

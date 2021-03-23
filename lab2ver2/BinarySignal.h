@@ -8,6 +8,14 @@ struct Signal {
 	char duration = 0;
 };
 
+struct Offset {
+    int index = 0;
+    int length = 0;
+
+    Offset(int index, int length) :index(index), length(length) {};
+    Offset() :index(0), length(0) {};
+};
+
 class BinarySignal
 {
 public:
@@ -27,12 +35,16 @@ public:
 
     BinarySignal& operator *=(const int right);            // Копирование сигнала определённое число раз
 
-    BinarySignal& operator ()(const int position, const BinarySignal& binarySignalToInsert); // Вставка в определённый момент времени(тип int) другого сигнала(с помощью перегруженного оператора());
+    BinarySignal& operator ()(const int position, BinarySignal const binarySignalToInsert); // Вставка в определённый момент времени(тип int) другого сигнала(с помощью перегруженного оператора());
 
     BinarySignal& operator ()(const int position, const int duration); // Удаление фрагмента сигнала в определенное время(тип int) определённой длительности(с помощью перегруженного оператора()).
+
+    bool isEqual(BinarySignal& right); // Введён дополнительно
 
 private:
 	Signal signals_[MAX_COUNT_STATES];
 	unsigned int size_ = 0;
+
+    Offset GetIndex(const int position) const;
 };
 

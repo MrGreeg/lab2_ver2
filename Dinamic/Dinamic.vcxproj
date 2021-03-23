@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{4c52f286-d3cf-4191-850a-8c9535f1b2ea}</ProjectGuid>
-    <RootNamespace>lab2ver2</RootNamespace>
+    <ProjectGuid>{ab800fd5-4488-4d7a-b8bc-4bea4995dc5a}</ProjectGuid>
+    <RootNamespace>Dinamic</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -139,13 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="Task.txt" />
+    <ClInclude Include="DinamicArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BinarySignal.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="BinarySignal.cpp" />
+    <ClCompile Include="DinamicArray.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
