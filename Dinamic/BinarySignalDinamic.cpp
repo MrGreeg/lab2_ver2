@@ -1,11 +1,11 @@
-#include "BinarySignal.h"
+#include "BinarySignalDinamic.h"
 #include <iostream>
 
-BinarySignal::BinarySignal()
+BinarySignalDinamic::BinarySignalDinamic()
 {
 }
 
-BinarySignal::BinarySignal(char level) {
+BinarySignalDinamic::BinarySignalDinamic(char level) {
 	if (level == 1 || level > '0') {
 		level = 1;
 	}
@@ -18,7 +18,7 @@ BinarySignal::BinarySignal(char level) {
 	}
 }
 
-BinarySignal::BinarySignal(const std::string& inputSignal) {
+BinarySignalDinamic::BinarySignalDinamic(const std::string& inputSignal) {
 	size_ = 0;
 	if (inputSignal.length() > 0) {
 		int duration = 1;
@@ -46,19 +46,19 @@ BinarySignal::BinarySignal(const std::string& inputSignal) {
 		}
 		signals_[size_].level = level;
 		signals_[size_++].duration = duration;
-		
+
 	}
 }
 
-BinarySignal& BinarySignal::operator!() {
-	BinarySignal tempBinarySignal = *this;
+BinarySignalDinamic& BinarySignalDinamic::operator!() {
+	BinarySignalDinamic tempBinarySignalDinamic = *this;
 	for (int i = 0; i < size_; ++i) {
-		tempBinarySignal.signals_[i].level = (signals_[i].level + 1) % 2;	// Инверсия значения сигнала
+		tempBinarySignalDinamic.signals_[i].level = (signals_[i].level + 1) % 2;	// Инверсия значения сигнала
 	}
-	return tempBinarySignal;
+	return tempBinarySignalDinamic;
 }
 
-BinarySignal& BinarySignal::operator+=(const BinarySignal& right) {
+BinarySignalDinamic& BinarySignalDinamic::operator+=(BinarySignalDinamic& right) {
 	if ((signals_[size_ - 1].level == right.signals_[0].level) &&
 		(signals_[size_ - 1].duration + right.signals_[0].duration > 255)) {
 		if (size_ + right.size_ - 1 > MAX_COUNT_STATES) {
@@ -79,12 +79,12 @@ BinarySignal& BinarySignal::operator+=(const BinarySignal& right) {
 	return *this;
 }
 
-//BinarySignal& BinarySignal::operator+=(const BinarySignal& right) {
+//BinarySignalDinamic& BinarySignalDinamic::operator+=(BinarySignalDinamic& right) {
 //	int index = GetIndex(posi)
 //	return *this;
 //}
 
-BinarySignal& BinarySignal::operator*=(const int right)
+BinarySignalDinamic& BinarySignalDinamic::operator*=(int right)
 {
 	if ((signals_[size_ - 1].level == signals_[0].level) &&
 		(signals_[size_ - 1].duration + signals_[0].duration > 255)) {
@@ -108,12 +108,12 @@ BinarySignal& BinarySignal::operator*=(const int right)
 	return *this;
 }
 
-//BinarySignal& BinarySignal::operator()(const int position, const BinarySignal& binarySignalToInsert)
+//BinarySignalDinamic& BinarySignalDinamic::operator()(int position, BinarySignalDinamic& BinarySignalDinamicToInsert)
 //{	// как вариант перевести в строку из 0 и 1, вставить в нужное место и использовать конструктор от строки
 //	if (position > MAX_COUNT_STATES * 255) {
 //		throw "Exceeding the limits of the allowed position values";
 //	}
-//	if (size_ + binarySignalToInsert.size_ > MAX_COUNT_STATES-2) {
+//	if (size_ + BinarySignalDinamicToInsert.size_ > MAX_COUNT_STATES-2) {
 //		Signal tempSignal[MAX_COUNT_STATES];
 //		int tempSize = 0;
 //		for (int i = position / 255; i < size_; i++) {
@@ -127,8 +127,8 @@ BinarySignal& BinarySignal::operator*=(const int right)
 //			tempSignal[i].duration = 0;
 //		}
 //		size_ = position / 255;
-//		for (int i = 0; i < binarySignalToInsert.size_; i++) {
-//			signals_[size_++] = binarySignalToInsert.signals_[i];
+//		for (int i = 0; i < BinarySignalDinamicToInsert.size_; i++) {
+//			signals_[size_++] = BinarySignalDinamicToInsert.signals_[i];
 //		}
 //		for (int i = 0; i < tempSize; i++) {
 //			signals_[size_++] = tempSignal[i];
@@ -139,7 +139,7 @@ BinarySignal& BinarySignal::operator*=(const int right)
 //	}
 //}
 
-BinarySignal& BinarySignal::operator()(const int position, const BinarySignal binarySignalToInsert)
+BinarySignalDinamic& BinarySignalDinamic::operator()(const int position, BinarySignalDinamic binarySignalToInsert)
 {	// как вариант перевести в строку из 0 и 1, вставить в нужное место и использовать конструктор от строки
 	if (position > MAX_COUNT_STATES * 255) {
 		throw "Exceeding the limits of the allowed position values";
@@ -151,12 +151,12 @@ BinarySignal& BinarySignal::operator()(const int position, const BinarySignal bi
 	if (size_ + binarySignalToInsert.size_ >= MAX_COUNT_STATES - 1) {
 		throw "The signal is too long";
 	}
-	Signal remainingPartSignal = signals_[offset.index+1];	// остаток от сигнала
-	signals_[offset.index+1].duration = position - offset.length;
+	Signal remainingPartSignal = signals_[offset.index + 1];	// остаток от сигнала
+	signals_[offset.index + 1].duration = position - offset.length;
 	signals_[offset.index + 2 + binarySignalToInsert.size_].level = remainingPartSignal.level;
 	signals_[offset.index + 2 + binarySignalToInsert.size_].duration = remainingPartSignal.duration - signals_[offset.index + 1].duration;
 	for (int i = offset.index + 2; i < offset.index + 2 + binarySignalToInsert.size_; i++) {	// сдвиг части массива
-		signals_[i + binarySignalToInsert.size_+1] = signals_[i];
+		signals_[i + binarySignalToInsert.size_ + 1] = signals_[i];
 	}
 	for (int i = offset.index + 2; i < offset.index + 2 + binarySignalToInsert.size_; i++) {	// вставка на освобождённое место сигнала
 		signals_[i] = binarySignalToInsert.signals_[i - offset.index - 2];
@@ -193,7 +193,7 @@ BinarySignal& BinarySignal::operator()(const int position, const BinarySignal bi
 	return *this;
 }
 
-BinarySignal& BinarySignal::operator()(const int position, int duration)
+BinarySignalDinamic& BinarySignalDinamic::operator()(int position, int duration)
 {
 	//std::string str = "";
 	//for (int i = 0; i < size_; i++) {
@@ -205,7 +205,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 	//	}
 	//}
 	//str.erase(position, duration);
-	//BinarySignal temp(str);
+	//BinarySignalDinamic temp(str);
 	//return temp;
 	if (duration > 0) {
 		Offset offsetStart = GetIndex(position);
@@ -222,7 +222,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 		// оптимизация
 		int correct = 1;
 		for (int i = 0; i < size_ - 1; i++) {
-			if (signals_[i].duration!=0 && signals_[i].level == signals_[i + correct].level) {
+			if (signals_[i].duration != 0 && signals_[i].level == signals_[i + correct].level) {
 
 				if (signals_[i].duration < 255) {
 					char difference = 255 - signals_[i].duration;
@@ -238,7 +238,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 					}
 				}
 			}
-			if ((i!= i + correct - 1) && signals_[i].duration == 0 && signals_[i + correct - 1].duration != 0) {
+			if ((i != i + correct - 1) && signals_[i].duration == 0 && signals_[i + correct - 1].duration != 0) {
 				signals_[i] = signals_[i + correct - 1];
 				signals_[i + correct - 1].duration = 0;
 				signals_[i + correct - 1].level = 0;
@@ -246,12 +246,12 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 		}
 		size_ -= correct - 1;
 	}
-	
+
 
 	return *this;
 }
 
-bool BinarySignal::isEqual(BinarySignal& right)
+bool BinarySignalDinamic::isEqual(BinarySignalDinamic& right)
 {
 	bool result = size_ == right.size_;
 	if (result == true) {
@@ -259,18 +259,18 @@ bool BinarySignal::isEqual(BinarySignal& right)
 			result = result && (signals_[i].duration == right.signals_[i].duration) && (signals_[i].level == right.signals_[i].level);
 		}
 	}
-	
+
 	return result;
 }
 
-Offset BinarySignal::GetIndex(const int position) const
+Offset BinarySignalDinamic::GetIndex(int position) 
 {
 	int length = 0;
 	int index = -1;
-	while (index + 1 < size_ && (signals_[index + 1].duration + length < position )) {
+	while (index + 1 < size_ && (signals_[index + 1].duration + length < position)) {
 		index++;
 		length += signals_[index].duration;
-		
+
 	}
 	//if (position > length) {
 	//	index = -1;
@@ -278,50 +278,50 @@ Offset BinarySignal::GetIndex(const int position) const
 	return Offset(index, length);
 }
 
-std::ostream& operator<<(std::ostream& out, const BinarySignal& binarySignal)
+std::ostream& operator<<(std::ostream& out, BinarySignalDinamic& binarySignalDinamic)
 {
 	char symbol;
-	for (int i = 0; i < binarySignal.size_; ++i) {
-		if (binarySignal.signals_[i].level == 0) {
+	for (int i = 0; i < binarySignalDinamic.size_; ++i) {
+		if (binarySignalDinamic.signals_[i].level == 0) {
 			symbol = '_';
 		}
 		else {
 			symbol = char(196);
 		}
-		if (i > 0 && binarySignal.signals_[i - 1].level != binarySignal.signals_[i].level) {
-			if (binarySignal.signals_[i].level == 0) {
+		if (i > 0 && binarySignalDinamic.signals_[i - 1].level != binarySignalDinamic.signals_[i].level) {
+			if (binarySignalDinamic.signals_[i].level == 0) {
 				out << char(191);
 			}
 			else {
 				out << char(218);
 			}
 		}
-		for (int j = 0; j < binarySignal.signals_[i].duration; ++j) {
+		for (int j = 0; j < binarySignalDinamic.signals_[i].duration; ++j) {
 			out << symbol;
 		}
 	}
 	return out;
 }
 
-std::istream& operator>>(std::istream& in, BinarySignal& binarySignal)
+std::istream& operator>>(std::istream& in, BinarySignalDinamic& binarySignalDinamic)
 {
-	if (binarySignal.size_ < MAX_COUNT_STATES) {
+	if (binarySignalDinamic.size_ < MAX_COUNT_STATES) {
 		try {
-			BinarySignal tempBinarySignal = binarySignal;
+			BinarySignalDinamic tempBinarySignalDinamic = binarySignalDinamic;
 			char inputSignal;
 			in >> inputSignal;
 			//std::cout << inputSignal;
 			int duration = 1;
 			char level = inputSignal > '0' ? 1 : 0;
 			char levelSignal = level;
-			while (!in.eof() && tempBinarySignal.size_<MAX_COUNT_STATES) {
+			while (!in.eof() && tempBinarySignalDinamic.size_ < MAX_COUNT_STATES) {
 				in >> inputSignal;
 				//std::cout << inputSignal;
 				levelSignal = inputSignal > '0' ? 1 : 0;
 				if (level == levelSignal) {
 					if (duration == 255) {
-						tempBinarySignal.signals_[tempBinarySignal.size_].level = level;
-						tempBinarySignal.signals_[tempBinarySignal.size_++].duration = duration;
+						tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_].level = level;
+						tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_++].duration = duration;
 						duration = 0;
 					}
 					else {
@@ -329,23 +329,23 @@ std::istream& operator>>(std::istream& in, BinarySignal& binarySignal)
 					}
 				}
 				else {
-					tempBinarySignal.signals_[tempBinarySignal.size_].level = level;
-					tempBinarySignal.signals_[tempBinarySignal.size_++].duration = duration;
+					tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_].level = level;
+					tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_++].duration = duration;
 					duration = 1;
 					level = levelSignal;
 					levelSignal = 5;
 				}
 			}
-			if (tempBinarySignal.size_ >= MAX_COUNT_STATES-1 && !in.eof()) {
+			if (tempBinarySignalDinamic.size_ >= MAX_COUNT_STATES - 1 && !in.eof()) {
 				throw "Exceeding the maximum size";
 			}
 			else {
-				tempBinarySignal.signals_[tempBinarySignal.size_].level = level;
-				tempBinarySignal.signals_[tempBinarySignal.size_++].duration = duration;
+				tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_].level = level;
+				tempBinarySignalDinamic.signals_[tempBinarySignalDinamic.size_++].duration = duration;
 
-				binarySignal = tempBinarySignal;
+				binarySignalDinamic = tempBinarySignalDinamic;
 			}
-			
+
 		}
 		catch (std::ios_base::iostate except) {
 			in.setstate(std::ios_base::failbit);
