@@ -21,7 +21,7 @@ int main(){
 	BinarySignalDinamic binarySignal3 = binarySignal2;
 	std::cout << "binarySignal3: " << binarySignal3 << std::endl;
 	std::cout << "binarySignal3 - insert signal 1001" << std::endl;
-	BinarySignalDinamic(3, BinarySignalDinamic("1001"));
+	binarySignal3(3, BinarySignalDinamic("1001"));
 	std::cout << "binarySignal3: " << binarySignal3 << std::endl;
 
 	return 0;

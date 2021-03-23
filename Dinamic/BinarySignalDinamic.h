@@ -32,7 +32,7 @@ public:
 
     BinarySignalDinamic& operator *=( int right);            // Копирование сигнала определённое число раз
 
-    BinarySignalDinamic& operator ()(const int position, BinarySignalDinamic binarySignalToInsert); // Вставка в определённый момент времени(тип int) другого сигнала(с помощью перегруженного оператора());
+    BinarySignalDinamic& operator ()( int position, BinarySignalDinamic binarySignalToInsert); // Вставка в определённый момент времени(тип int) другого сигнала(с помощью перегруженного оператора());
 
     BinarySignalDinamic& operator ()( int position,  int duration); // Удаление фрагмента сигнала в определенное время(тип int) определённой длительности(с помощью перегруженного оператора()).
 
@@ -42,6 +42,6 @@ private:
     DinamicArray signals_;
     unsigned int size_ = 0;
 
-    Offset GetIndex( int position) ;
+    Offset GetIndex( int position);
 };
 
