@@ -139,11 +139,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BinarySignalDinamic.h" />
+    <ClInclude Include="BinarySignal.h" />
     <ClInclude Include="DinamicArray.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BinarySignalDinamic.cpp" />
+    <ClCompile Include="BinarySignal.cpp" />
     <ClCompile Include="DinamicArray.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>

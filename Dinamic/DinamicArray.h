@@ -43,6 +43,13 @@ public:
 		return array[position / sizeBlock][position % sizeBlock];
 	};
 
+	Signal& operator[](const size_t position) const {
+		if (position / sizeBlock >= size) {
+			throw "Error going out of the array";
+		}
+		return array[position / sizeBlock][position % sizeBlock];
+	};
+
 	DinamicArray& operator = (const DinamicArray& object) {
 		if (this != &object) { // проверка  a = a
 			for (int i = 0; i < size; i++) {
@@ -87,33 +94,4 @@ private:
 	unsigned int size = 0;
 	int sizeBlock = 256;
 };
-//
-//template<class TN>
-//inline DinamicArray::DinamicArray()
-//{
-//	sizeBlock = SIZE_BLOCK;
-//}
-//
-//template<class TN>
-//inline DinamicArray<TN>::DinamicArray(int sizeBlock)
-//{
-//	DinamicArray::sizeBlock = sizeBlock;
-//}
-//
-//template<class TN>
-//inline DinamicArray<TN>& DinamicArray<TN>::operator[](const int position)
-//{
-//	if (position / sizeBlock > size) {
-//		TN** temp = new * TN(position / sizeBlock);
-//		for (int i = 0 i < size; i++) {
-//			temp[i] = array[i];
-//		}
-//		for (int i = size; i < position / sizeBlock; i++) {
-//			temp[i] = new TN(sizeBlock);
-//		}
-//		delete[] array;
-//		array = temp;
-//		size = position / sizeBlock;
-//	}
-//	return *array[position / sizeBlock][position % sizeBlock];
-//}
+

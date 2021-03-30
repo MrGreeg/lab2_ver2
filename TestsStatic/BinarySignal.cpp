@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "BinarySignal.h"
 #include <iostream>
 
@@ -72,7 +73,7 @@ BinarySignal& BinarySignal::operator+=(const BinarySignal& right) {
 	}
 
 	int countElement = (size_ + right.size_) % MAX_COUNT_STATES;
-	for (int i = 0; i < countElement; ++i) {
+	for (int i = 0; i < right.size_; ++i) {
 		signals_[size_].level = right.signals_[i].level;
 		signals_[size_++].duration = right.signals_[i].duration;
 	}
@@ -99,7 +100,7 @@ BinarySignal& BinarySignal::operator*=(const int right)
 	}
 
 	int size = size_;
-	for (int n = 0; n < right; ++n) {
+	for (int n = 0; n < right-1; ++n) {
 		for (int i = 0; i < size && size_ < MAX_COUNT_STATES; ++i) {
 			signals_[size_].level = signals_[i].level;
 			signals_[size_++].duration = signals_[i].duration;
@@ -108,36 +109,6 @@ BinarySignal& BinarySignal::operator*=(const int right)
 	return *this;
 }
 
-//BinarySignal& BinarySignal::operator()(const int position, const BinarySignal& binarySignalToInsert)
-//{	// как вариант перевести в строку из 0 и 1, вставить в нужное место и использовать конструктор от строки
-//	if (position > MAX_COUNT_STATES * 255) {
-//		throw "Exceeding the limits of the allowed position values";
-//	}
-//	if (size_ + binarySignalToInsert.size_ > MAX_COUNT_STATES-2) {
-//		Signal tempSignal[MAX_COUNT_STATES];
-//		int tempSize = 0;
-//		for (int i = position / 255; i < size_; i++) {
-//			if (position % 255 == 0) {
-//				tempSignal[tempSize++] = tempSignal[i];
-//			}
-//			else {
-//				tempSignal[tempSize].duration = tempSignal[i].duration - position % 255;
-//				tempSignal[tempSize++].level = tempSignal[i].level;
-//			}
-//			tempSignal[i].duration = 0;
-//		}
-//		size_ = position / 255;
-//		for (int i = 0; i < binarySignalToInsert.size_; i++) {
-//			signals_[size_++] = binarySignalToInsert.signals_[i];
-//		}
-//		for (int i = 0; i < tempSize; i++) {
-//			signals_[size_++] = tempSignal[i];
-//		}
-//	}
-//	else {
-//		throw "Exceeding the maximum size";
-//	}
-//}
 
 BinarySignal& BinarySignal::operator()(const int position, const BinarySignal binarySignalToInsert)
 {	// как вариант перевести в строку из 0 и 1, вставить в нужное место и использовать конструктор от строки
@@ -145,10 +116,10 @@ BinarySignal& BinarySignal::operator()(const int position, const BinarySignal bi
 		throw "Exceeding the limits of the allowed position values";
 	}
 	Offset offset = GetIndex(position);
-	if (offset.index >= size_) {
+	if (offset.index >= (int)size_) {
 		throw "Exceeding the limits of the allowed position values";
 	}
-	if ((int)size_ + (int)binarySignalToInsert.size_ >= MAX_COUNT_STATES - 1) {
+	if (size_ + binarySignalToInsert.size_ >= MAX_COUNT_STATES - 1) {
 		throw "The signal is too long";
 	}
 	Signal remainingPartSignal = signals_[offset.index+1];	// остаток от сигнала
@@ -254,6 +225,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 bool BinarySignal::isEqual(BinarySignal& right)
 {
 	bool result = size_ == right.size_;
+
 	if (result == true) {
 		for (int i = 0; i < size_; i++) {
 			result = result && (signals_[i].duration == right.signals_[i].duration) && (signals_[i].level == right.signals_[i].level);

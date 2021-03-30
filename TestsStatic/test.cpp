@@ -1,44 +1,27 @@
 #include "pch.h"
-#include "../lab2ver2/BinarySignal.h"
+#include "BinarySignal.h"
 #include <string>
 
-TEST(TestSum, ZeroAddZero) {
-	//std::string str;
-	//getline(std::cin, str);
-	//BinarySignal bs1(0);
-	//BinarySignal bs2(0);
+TEST(TestDelete, Delete) {
 	int a = 0;
 	EXPECT_TRUE(BinarySignal("01110").isEqual(BinarySignal("011100110")(3, 4)));
 }
 
-//class TestDinamicArray : public ::testing::Test
-//{
-//protected:
-//	void SetUp()
-//	{
-//		foo = new DinamicArray;
-//		foo->i = 5;
-//	}
-//	void TearDown()
-//	{
-//		delete foo;
-//	}
-//	Foo* foo;
-//};
+TEST(TestInsert, Insert) {
+	BinarySignal bs("000");
+	bs(3, BinarySignal("111"));
+	EXPECT_TRUE(BinarySignal("000111").isEqual(bs));
+}
 
-//TEST_F(TestFoo, test1)
-//{
-//	ASSERT_EQ(foo->i, 5);
-//	foo->i = 10;
-//}
-//
-//TEST_F(TestFoo, test2)
-//{
-//	ASSERT_EQ(foo->i, 5);
-//}
+TEST(TestADD, Add) {
+	BinarySignal bs("000");
+	bs+=BinarySignal("111");
+	EXPECT_TRUE(BinarySignal("000111").isEqual(bs));
+}
 
-//int main(int argc, char* argv[])
-//{
-//	::testing::InitGoogleTest(&argc, argv);
-//	return RUN_ALL_TESTS();
-//}
+TEST(TestMul, Mul) {
+	BinarySignal bs("000111");
+	bs *= 2;
+	EXPECT_TRUE(BinarySignal("000111000111").isEqual(bs));
+}
+

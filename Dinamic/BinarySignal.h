@@ -1,12 +1,8 @@
 #pragma once
 #include <string>
+#include "DinamicArray.h"
 
 const int MAX_COUNT_STATES = 256;	// ћаксимальное количество описаний сигнала
-
-struct Signal {
-	char level = 0;
-	char duration = 0;
-};
 
 struct Offset {
     int index = 0;
@@ -19,7 +15,7 @@ struct Offset {
 class BinarySignal
 {
 public:
-	BinarySignal();		                    // ѕустой конструктор дл€ инициализации экземпл€ров и массивов экземпл€ров класса по умолчанию.
+    BinarySignal();		                    // ѕустой конструктор дл€ инициализации экземпл€ров и массивов экземпл€ров класса по умолчанию.
 
     BinarySignal(char level);               //  онструктор дл€ инициализацией посто€нным уровнем сигнала(уровень 0 или 1 на максимальную длительность).
 
@@ -42,8 +38,8 @@ public:
     bool isEqual(BinarySignal& right); // ¬ведЄн дополнительно
 
 private:
-	Signal signals_[MAX_COUNT_STATES];
-	unsigned int size_ = 0;
+    DinamicArray signals_;
+    unsigned int size_ = 0;
 
     Offset GetIndex(const int position) const;
 };

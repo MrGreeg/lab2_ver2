@@ -24,7 +24,7 @@ public:
 
     friend std::ostream& operator <<(std::ostream& out,  BinarySignalDinamic& BinarySignal);  // Вывод сигнала с помощью псевдографики
 
-    friend std::istream& operator >>(std::istream& in, BinarySignalDinamic& BinarySignal);         // Ввод сигнала из входного потока;
+    friend std::istream& operator >>(std::istream& in, const BinarySignalDinamic& BinarySignal);         // Ввод сигнала из входного потока;
 
     BinarySignalDinamic& operator !();                             // Инверсия сигнала
 

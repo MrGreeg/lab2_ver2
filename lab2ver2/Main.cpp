@@ -23,6 +23,10 @@ int main() {
 	std::cout << "binarySignal3 - insert signal 1001" << std::endl;
 	binarySignal3(3, BinarySignal("1001"));
 	std::cout << "binarySignal3: " << binarySignal3 << std::endl;
+	std::cout << "invert binarySignal3: " << std::endl;
+	binarySignal3 = !binarySignal3;
+	std::cout << "binarySignal3: " << binarySignal3 << std::endl;
+
 
 
 	return 0;

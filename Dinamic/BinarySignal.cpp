@@ -46,7 +46,7 @@ BinarySignal::BinarySignal(const std::string& inputSignal) {
 		}
 		signals_[size_].level = level;
 		signals_[size_++].duration = duration;
-		
+
 	}
 }
 
@@ -148,15 +148,15 @@ BinarySignal& BinarySignal::operator()(const int position, const BinarySignal bi
 	if (offset.index >= size_) {
 		throw "Exceeding the limits of the allowed position values";
 	}
-	if ((int)size_ + (int)binarySignalToInsert.size_ >= MAX_COUNT_STATES - 1) {
+	if (size_ + binarySignalToInsert.size_ >= MAX_COUNT_STATES - 1) {
 		throw "The signal is too long";
 	}
-	Signal remainingPartSignal = signals_[offset.index+1];	// остаток от сигнала
-	signals_[offset.index+1].duration = position - offset.length;
+	Signal remainingPartSignal = signals_[offset.index + 1];	// остаток от сигнала
+	signals_[offset.index + 1].duration = position - offset.length;
 	signals_[offset.index + 2 + binarySignalToInsert.size_].level = remainingPartSignal.level;
 	signals_[offset.index + 2 + binarySignalToInsert.size_].duration = remainingPartSignal.duration - signals_[offset.index + 1].duration;
 	for (int i = offset.index + 2; i < offset.index + 2 + binarySignalToInsert.size_; i++) {	// сдвиг части массива
-		signals_[i + binarySignalToInsert.size_+1] = signals_[i];
+		signals_[i + binarySignalToInsert.size_ + 1] = signals_[i];
 	}
 	for (int i = offset.index + 2; i < offset.index + 2 + binarySignalToInsert.size_; i++) {	// вставка на освобождённое место сигнала
 		signals_[i] = binarySignalToInsert.signals_[i - offset.index - 2];
@@ -222,7 +222,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 		// оптимизация
 		int correct = 1;
 		for (int i = 0; i < size_ - 1; i++) {
-			if (signals_[i].duration!=0 && signals_[i].level == signals_[i + correct].level) {
+			if (signals_[i].duration != 0 && signals_[i].level == signals_[i + correct].level) {
 
 				if (signals_[i].duration < 255) {
 					char difference = 255 - signals_[i].duration;
@@ -238,7 +238,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 					}
 				}
 			}
-			if ((i!= i + correct - 1) && signals_[i].duration == 0 && signals_[i + correct - 1].duration != 0) {
+			if ((i != i + correct - 1) && signals_[i].duration == 0 && signals_[i + correct - 1].duration != 0) {
 				signals_[i] = signals_[i + correct - 1];
 				signals_[i + correct - 1].duration = 0;
 				signals_[i + correct - 1].level = 0;
@@ -246,7 +246,7 @@ BinarySignal& BinarySignal::operator()(const int position, int duration)
 		}
 		size_ -= correct - 1;
 	}
-	
+
 
 	return *this;
 }
@@ -259,7 +259,7 @@ bool BinarySignal::isEqual(BinarySignal& right)
 			result = result && (signals_[i].duration == right.signals_[i].duration) && (signals_[i].level == right.signals_[i].level);
 		}
 	}
-	
+
 	return result;
 }
 
@@ -267,10 +267,10 @@ Offset BinarySignal::GetIndex(const int position) const
 {
 	int length = 0;
 	int index = -1;
-	while (index + 1 < size_ && (signals_[index + 1].duration + length < position )) {
+	while (index + 1 < size_ && (signals_[index + 1].duration + length < position)) {
 		index++;
 		length += signals_[index].duration;
-		
+
 	}
 	//if (position > length) {
 	//	index = -1;
@@ -314,7 +314,7 @@ std::istream& operator>>(std::istream& in, BinarySignal& binarySignal)
 			int duration = 1;
 			char level = inputSignal > '0' ? 1 : 0;
 			char levelSignal = level;
-			while (!in.eof() && tempBinarySignal.size_<MAX_COUNT_STATES) {
+			while (!in.eof() && tempBinarySignal.size_ < MAX_COUNT_STATES) {
 				in >> inputSignal;
 				//std::cout << inputSignal;
 				levelSignal = inputSignal > '0' ? 1 : 0;
@@ -336,7 +336,7 @@ std::istream& operator>>(std::istream& in, BinarySignal& binarySignal)
 					levelSignal = 5;
 				}
 			}
-			if (tempBinarySignal.size_ >= MAX_COUNT_STATES-1 && !in.eof()) {
+			if (tempBinarySignal.size_ >= MAX_COUNT_STATES - 1 && !in.eof()) {
 				throw "Exceeding the maximum size";
 			}
 			else {
@@ -345,7 +345,7 @@ std::istream& operator>>(std::istream& in, BinarySignal& binarySignal)
 
 				binarySignal = tempBinarySignal;
 			}
-			
+
 		}
 		catch (std::ios_base::iostate except) {
 			in.setstate(std::ios_base::failbit);
